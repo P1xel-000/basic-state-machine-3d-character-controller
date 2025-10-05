@@ -1,0 +1,61 @@
+[gd_scene load_steps=8 format=3 uid="uid://dpl67k1mmytay"]
+
+[ext_resource type="PackedScene" uid="uid://centyh8c0qjta" path="res://player/player_controller.tscn" id="1_vexdo"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_vexdo"]
+sky_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
+ground_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
+
+[sub_resource type="Sky" id="Sky_wukjy"]
+sky_material = SubResource("ProceduralSkyMaterial_vexdo")
+
+[sub_resource type="Environment" id="Environment_olifj"]
+background_mode = 2
+sky = SubResource("Sky_wukjy")
+tonemap_mode = 2
+glow_enabled = true
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_qnjyj"]
+frequency = 0.05
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_vexdo"]
+width = 1024
+height = 1024
+noise = SubResource("FastNoiseLite_qnjyj")
+seamless = true
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_wukjy"]
+albedo_color = Color(0, 0.6627451, 0, 1)
+albedo_texture = SubResource("NoiseTexture2D_vexdo")
+uv1_triplanar = true
+
+[node name="demo_world" type="Node3D"]
+
+[node name="enviroment" type="Node" parent="."]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="enviroment"]
+environment = SubResource("Environment_olifj")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="enviroment"]
+transform = Transform3D(-0.8660254, -0.43301278, 0.25, 0, 0.49999997, 0.86602545, -0.50000006, 0.75, -0.43301266, 0, 0, 0)
+shadow_enabled = true
+
+[node name="world" type="Node" parent="."]
+
+[node name="CSGBox3D" type="CSGBox3D" parent="world"]
+transform = Transform3D(2.5, 0, 0, 0, 2.5, 0, 0, 0, 2.5, -2.5, -0.625, 0.75)
+use_collision = true
+size = Vector3(10, 0.5, 10)
+material = SubResource("StandardMaterial3D_wukjy")
+
+[node name="CSGBox3D2" type="CSGBox3D" parent="world"]
+transform = Transform3D(2.5, 0, 0, 0, 2.5, 0, 0, 0, 2.5, 3.75, 1.25, -3)
+use_collision = true
+
+[node name="CSGBox3D3" type="CSGBox3D" parent="world"]
+transform = Transform3D(2.5, 0, 0, 0, 2.5, 0, 0, 0, 2.5, 3.75, 0.625, 0.75)
+use_collision = true
+size = Vector3(1, 0.5, 1)
+
+[node name="player_controller" parent="." instance=ExtResource("1_vexdo")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.6857815, 1.2499999, 0.22600353)
